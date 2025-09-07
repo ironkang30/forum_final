@@ -14,20 +14,26 @@ function escapeHtml(text: string): string {
 }
 
 // 게시글 유효성 검사
-function validatePost(data: any): { isValid: boolean; error?: string } {
-  if (!data.title || typeof data.title !== 'string' || data.title.trim().length === 0) {
+function validatePost(data: unknown): { isValid: boolean; error?: string } {
+  if (!data || typeof data !== 'object') {
+    return { isValid: false, error: '유효하지 않은 데이터입니다.' };
+  }
+  
+  const postData = data as { title?: unknown; content?: unknown; category?: unknown };
+  
+  if (!postData.title || typeof postData.title !== 'string' || postData.title.trim().length === 0) {
     return { isValid: false, error: '제목은 필수입니다.' };
   }
-  if (data.title.length > 100) {
+  if (postData.title.length > 100) {
     return { isValid: false, error: '제목은 100자 이하여야 합니다.' };
   }
-  if (!data.content || typeof data.content !== 'string' || data.content.trim().length === 0) {
+  if (!postData.content || typeof postData.content !== 'string' || postData.content.trim().length === 0) {
     return { isValid: false, error: '내용은 필수입니다.' };
   }
-  if (data.content.length > 2000) {
+  if (postData.content.length > 2000) {
     return { isValid: false, error: '내용은 2000자 이하여야 합니다.' };
   }
-  if (!data.category || typeof data.category !== 'string') {
+  if (!postData.category || typeof postData.category !== 'string') {
     return { isValid: false, error: '카테고리는 필수입니다.' };
   }
   return { isValid: true };

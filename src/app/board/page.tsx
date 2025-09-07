@@ -246,7 +246,7 @@ export default function BoardPage() {
 
   useEffect(() => {
     fetchPosts();
-  }, [filters, pagination.currentPage]);
+  }, [filters, pagination.currentPage, fetchPosts]);
 
   // 게시글 목록 뷰
   const renderPostList = () => (
